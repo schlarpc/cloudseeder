@@ -1,0 +1,98 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta charset="utf-8">
+    <title>{{title}} - CloudSeeder</title>
+    <link href="https://fonts.googleapis.com/css?family=Open+Sans:400,700" rel="stylesheet">
+    <style>
+        h1, h2, h3 {
+            font-family: "Open Sans", "Lucida Grande", "Helvetica Neue", Arial;
+            color: #444444;
+        }
+        .topictitle {
+            font-size: 24px;
+            font-weight: bold;
+            color: #e47911;
+            padding: 69px 0 14px 0;
+            margin-top: -69px;
+        }
+        code {
+            font-family: "Consolas", Courier, mono;
+            overflow: auto;
+        }
+        body {
+            font-family: "Open Sans", "Lucida Grande", "Helvetica Neue", Arial;
+            font-size: 16px;
+            color: #444444;
+        }
+        p {
+            line-height: 1.5em;
+        }
+        h3 {
+            font-size: 16px;
+            font-weight: bold;
+            color: #007697;
+        }
+        a {
+            text-decoration: none;
+            color: #1166BB;
+        }
+        a:visited {
+            color: #E48700;
+        }
+        a:hover {
+            color: #3388DD;
+        }
+        pre {
+            font-size: 14px;
+            font-weight: normal;
+            font-family: "Consolas", Courier, mono;
+            border: 1px solid #e1e1e8;
+            border-radius: 3px;
+            padding: .5em;
+            line-height: normal;
+            background-color: #fafafa;
+            overflow: auto;
+            position: relative;
+            padding: 0px;
+        }
+        pre .err {
+            color: #FF0000;
+            font-style: italic;
+        }
+    </style>
+  </head>
+  <body>
+    <h1 class="topictitle">{{title}}</h1>
+    {{ summary|safe }}
+
+    <div class="highlights">
+        <p><strong>Topics</strong></p>
+        <ul>
+            <li><a href="#syntax">Syntax</a></li>
+            <li><a href="#syntax">Properties</a></li>
+        </ul>
+    </div>
+    <h2 id="syntax">Syntax</h2>
+    <p>
+        To declare this entity in your AWS CloudFormation template, use the following syntax:
+    </p>
+    <div>
+        <h3>JSON</h3>
+        {{json_syntax|safe}}
+    </div>
+
+    <h2 id="properties">Properties</h2>
+
+    <div class="variablelist">
+    {% for property in properties %}
+        <dt><code>{{ property['name'] }}</code></dt>
+        <dd>
+            <p><em>Required: </em>{{ 'Yes' if property['required'] else 'No' }}</p>
+            <p><em>Type: </em>{{ property['type'] }}</p>
+        </dd>
+    {% endfor %}
+    </div>
+
+  </body>
+</html>
