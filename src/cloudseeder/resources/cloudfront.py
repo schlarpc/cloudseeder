@@ -19,8 +19,10 @@ class OriginAccessIdentity(Resource):
     def create(self, request, session):
         cloudfront = session.client('cloudfront')
         response = cloudfront.create_cloud_front_origin_access_identity(
-            CallerReference=self.CallerReference,
-            Comment=getattr(self, 'Comment', ''),
+            CloudFrontOriginAccessIdentityConfig={
+                'CallerReference': self.CallerReference,
+                'Comment': getattr(self, 'Comment', ''),
+            },
         )
         return self._get_return_values(response)
 

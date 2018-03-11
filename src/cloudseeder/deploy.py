@@ -32,29 +32,21 @@ def get_site_packages():
     # this is only accurate inside a virtualenv! outside, the world is far more complicated.
     return sysconfig.get_path('purelib')
 
-@contextlib.contextmanager
-def in_memory_zip():
-    with io.BytesIO() as f:
-        with zipfile.ZipFile(f, mode='w', compression=zipfile.ZIP_DEFLATED) as zipf:
-            zipf.get_bytes = f.getvalue
-            yield zipf
-
 def get_files_recursive(path):
     for root, _, files in os.walk(path, followlinks=True):
         for file in files:
             yield os.path.join(root, file)
 
-def create_environment_zip(site_packages_root):
-    with in_memory_zip() as zipf:
+def create_environment_zip(f, site_packages_root):
+    with zipfile.ZipFile(f, mode='w', compression=zipfile.ZIP_DEFLATED) as zipf:
         for file in get_files_recursive(site_packages_root):
             if file.endswith('.pyc'):
                 continue
             with open(file, 'rb') as f:
                 zipi = zipfile.ZipInfo(os.path.relpath(file, site_packages_root))
                 zipi.create_system = 3
-                zipi.external_attr = 0o755 << int(16)
+                zipi.external_attr = 0o755 << int(16) # Lambda is particular about permissions
                 zipf.writestr(zipi, f.read(), zipfile.ZIP_DEFLATED)
-        return zipf.get_bytes()
 
 def create_template(zip_path):
     template = Template(
@@ -103,7 +95,7 @@ def get_args(argv=None):
 def main(argv=None):
     args = get_args(argv)
     with open(args.code_output, 'wb') as f:
-        f.write(create_environment_zip(get_site_packages()))
+        create_environment_zip(f, get_site_packages())
     with open(args.template_output, 'w', encoding='utf-8') as f:
         f.write(create_template(args.code_output))
 

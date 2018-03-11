@@ -10,7 +10,7 @@ class GlobalSecondaryIndex(Property):
 class Table(Resource):
     """
     The `AWS::DynamoDB::Table` resource creates a DynamoDB table. For more information, see
-    [CreateTable](http://docs.aws.amazon.com/amazondynamodb/latest/APIReference/API_CreateTable.html)
+    [CreateTable](http://docs.aws.amazon.com/amazondynamodb/latest/APIReference/API_CreateTable.html)
     in the *Amazon DynamoDB API Reference*.
 
     You should be aware of the following behaviors when working with DynamoDB tables:

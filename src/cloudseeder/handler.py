@@ -5,12 +5,15 @@ Implements the CloudFormation custom resource handler as an AWS Lambda function.
 import functools
 import hashlib
 import json
+import logging
 import requests
 
 import boto3
 
 from . import exceptions, loader, types
 from .util import get_reason_from_exception, lru_cache
+
+logger = logging.getLogger(__name__)
 
 @lru_cache(1)
 def get_custom_resources_mapping():
@@ -83,6 +86,7 @@ def handler(event, _context=None):
         resource_method = getattr(resource, request.request_type.lower())
         response = unpack_response(request, resource_method(request, boto3.Session()))
     except Exception as ex:
+        logger.exception('Caught exception, failing request')
         response = types.Response.from_request(
             request,
             status=False,

@@ -1,5 +1,6 @@
-*.zip
-*.json
+cloudseeder-*.zip
+cloudseeder-*.json
+cloudseeder-*.yaml
 
 # Byte-compiled / optimized / DLL files
 __pycache__/
